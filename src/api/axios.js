@@ -6,6 +6,7 @@ console.log("BASE_URL:", baseURL);
 
 export default axios.create({
   baseURL, // Your Django backend
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

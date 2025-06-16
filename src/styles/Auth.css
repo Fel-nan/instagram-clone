@@ -1,10 +1,11 @@
 /* Base styles */
 body {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg-color);
+  color: (--text-color);
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Full layout wrapper */
@@ -43,9 +44,10 @@ body {
 
 /* Login form box */
 .form-box {
-  border: none;
+  border: 1px solid var(--border-color);
   padding: 40px;
-  background-color: #000;
+  background-color: var(--bg-color);
+  color: (--text-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,11 +55,13 @@ body {
 }
 
 /* Instagram logo text */
-.logo {
-  font-family: 'Billabong', cursive;
-  font-size: 48px;
+.signup-wrapper .login-wrapper .logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 50px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
+
 
 /* Input fields */
 form input {
@@ -68,6 +72,7 @@ form input {
   margin-bottom: 10px;
   color: #fff;
   border-radius: 4px;
+  background-color: var(--bg-color);
 }
 
 /* Login button */
@@ -141,12 +146,13 @@ form button {
 
 /* Signup section */
 .signup-box {
-  border: none;
+  border: 1px solid var(--border-color);
   background: #000;
   padding: 20px;
   margin-top: 10px;
   text-align: center;
   width: 100%;
+  background-color: var(--bg-color);
 }
 .signup-box a {
   color: #0095f6;
@@ -156,7 +162,8 @@ form button {
 /* "Get the app" section */
 .layout {
   text-align: center;
-  color: #fff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   margin-top: 2rem;
 }
 

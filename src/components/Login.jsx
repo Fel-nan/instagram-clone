@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Auth.css';
 import mockup from '../assets/Instapic.png'; // 
 import LogLayout from './logLayout';
@@ -8,6 +8,8 @@ import axios from '../api/axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
+
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   
@@ -39,6 +41,7 @@ const Login = () => {
 
     alert('Login successful!');
     // navigate('/home'); // If you're using react-router
+    navigate('/home');
   } catch (error) {
     console.error('Login error:', error.response?.data);
     const errorMsg =

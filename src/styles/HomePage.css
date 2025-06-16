@@ -1,29 +1,42 @@
 .homepage {
   display: flex;
-  height: 100vh;
-  background-color: #000;
-  color: #fff;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: Arial, sans-serif;
 }
 
 /* SIDEBAR */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 250px;
+  height: 100vh;
   padding: 20px;
   border-right: 1px solid #333;
-  display: flex;
-  flex-direction: column;
+  z-index: 100;
+}
+
+.nav-label {
+  display: inline;
+}
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: normal;
+  font-family: 'Pacifico', cursive;
 }
 
 .logo {
   font-size: 24px;
-  font-weight: bold;
+  font-family: 'Pacifico', cursive;
+  font-weight: normal;
   margin-bottom: 30px;
 }
 
-.sidebar ul {
+.sidebar nav ul {
   list-style: none;
-  padding: 0;
+  padding: 10px;
 }
 
 .sidebar li {
@@ -32,22 +45,40 @@
   align-items: center;
   gap: 15px;
   cursor: pointer;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+.sidebar nav ul li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .profile-link {
   margin-top: auto;
   font-weight: bold;
   cursor: pointer;
+  display: flex;
+  gap: 8px;
 }
 
 /* FEED */
 .feed {
   flex: 2;
-  padding: 20px;
+  padding: 20px 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center; /* centers the posts horizontally */
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden;
+  margin-left: 360px;
 }
 
 
@@ -55,14 +86,27 @@
   display: flex;
   gap: 15px;
   margin-bottom: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  overflow-y: hidden;
+  width: 100%;
+  scrollbar-width: none;
+  cursor: pointer;
+}
+.stories::-webkit-scrollbar {
+  display: none;
 }
 
 .story {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   width: 60px;
   font-size: 12px;
+  flex-shrink: 0;
 }
 
 .story-img {
@@ -70,7 +114,25 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #fff;
+  border: 2px solid #c13584;
+  padding: 2px;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.story-img:hover {
+  transform: scale(1.05);
+}
+
+.story-username {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .posts {
@@ -83,13 +145,19 @@
 }
 
 .post {
-  width: 100%;
-  max-width: 600px; /* Responsive max width */
-  background-color: #111;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 40px; /* space between posts */
+  border-bottom: 1px solid #333; /* optional Instagram-style separator */
 }
+.timestamp {
+  color: #888;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
 
 .post img {
   width: 100%;
@@ -102,7 +170,8 @@
 .suggestions {
   width: 300px;
   padding: 20px;
-  border-left: 1px solid #333;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .suggestions ul {
@@ -164,8 +233,8 @@
 .comment-input input {
   flex: 1;
   padding: 5px;
-  background-color: #222;
-  color: #fff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   border: 1px solid #444;
   border-radius: 5px;
 }
@@ -260,43 +329,48 @@
   }
 
   .sidebar {
-    width: 100%;
     position: fixed;
+    top: auto;
     bottom: 0;
     left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px;
     background-color: #000;
-    border-top: 1px solid #333;
-    border-right: none;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    padding: 0;
     z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .sidebar .logo,
-  .sidebar nav ul,
   .profile-link {
     display: none;
-  }
-
-  .sidebar nav {
-    width: 100%;
   }
 
   .sidebar nav ul {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar nav {
+    width: 100%;
   }
 
   .sidebar nav ul li {
-    margin: 0;
-    font-size: 20px;
+    flex: 1;
+    justify-content: center;
+    margin-bottom: 0;
   }
 
   .feed {
     padding-bottom: 60px; /* Add space for bottom nav */
+    margin-left: 15px;
   }
   .mobile-only {
     display: flex;
