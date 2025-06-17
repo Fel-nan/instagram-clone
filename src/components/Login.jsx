@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Auth.css';
-import mockup from '../assets/Instapic.png'; // 
+import mockup from '../assets/Instapic-removebg-preview.png'; // 
 import LogLayout from './logLayout';
 import { BsFacebook } from "react-icons/bs";
 import axios from '../api/axios';

@@ -70,7 +70,7 @@ form input {
   background: #121212;
   border: 1px solid #262626;
   margin-bottom: 10px;
-  color: #fff;
+  color: var(--text-color);
   border-radius: 4px;
   background-color: var(--bg-color);
 }

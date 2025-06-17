@@ -8,41 +8,108 @@ import { BsCameraReels, BsBookmark } from 'react-icons/bs';
 import { FiMessageCircle, FiMoreHorizontal, FiSend } from 'react-icons/fi';
 import axios from '../api/axios';
 import CreatePost from '../components/CreatePost';
+import CommentModal from '../components/CommentModal';
 
-const BASE_URL = "http://felnan.pythonanywhere.com";  // Replace with your real base URL
+const baseURL = process.env.REACT_APP_BASE_URL;  // Replace with your real base URL
 
 const HomePage = () => {
   const [postsData, setPostsData] = useState([]);
-  const [likes, setLikes] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [newComment, setNewComment] = useState({});
+
 
   const isVideo = (url) => typeof url === 'string' && /\.(mp4|mov|webm)$/i.test(url);
 
   const fullUrl = (url) => {
     if (!url) return null;
-    return url.startsWith("http") ? url : `${BASE_URL}${url}`;
+    return url.startsWith("http") ? url : `${baseURL}${url}`;
   };
 
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get("/api/posts/", { withCredentials: true });
-      console.log("Fetched posts:", response.data);  // Debug: log all posts
-      setPostsData(response.data);
-    } catch (err) {
-      console.error("Failed to fetch posts", err);
-    }
-  };
+ const fetchPosts = async () => {
+  try {
+    const response = await axios.get("/api/posts/", { withCredentials: true });
+    const posts = response.data;
+    setPostsData(posts);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+    // Build a likes object: { postId: true/false }
+    const likesMap = {};
+    posts.forEach(post => {
+      likesMap[post.id] = post.is_liked;
+    });
+    
 
-  const toggleLike = (postId) => {
-    setLikes((prev) => ({
-      ...prev,
-      [postId]: !prev[postId],
-    }));
-  };
+    console.log("Fetched posts:", posts);
+    console.log("Initialized likes:", likesMap);
+  } catch (err) {
+    console.error("Failed to fetch posts", err);
+  }
+  
+};useEffect(() => {
+  fetchPosts();
+}, []);
+
+
+  const handleToggleLike = async (postId) => {
+  try {
+    const token = localStorage.getItem('accessToken');
+
+    const response = await axios.post(
+      `/api/posts/${postId}/toggle_like/`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      }
+    );
+
+    setPostsData(prevPosts =>
+      prevPosts.map(post => {
+        if (post.id === postId) {
+          const currentlyLiked = post.is_liked;
+          return {
+            ...post,
+            is_liked: !currentlyLiked,
+            likes_count: currentlyLiked
+              ? post.likes_count - 1
+              : post.likes_count + 1,
+          };
+        }
+        return post;
+      })
+    );
+  } catch (error) {
+    console.error('Failed to toggle like:', error);
+  }
+};
+
+
+
+  const handleCommentSubmit = async (postId) => {
+  const content = newComment[postId];
+  if (!content?.trim()) return;
+
+  try {
+    const response = await axios.post(
+      `/api/posts/${postId}/add_comment/`,
+      { content },
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
+    );
+
+    // Optional: Update comments immediately in UI if you're storing them
+    setNewComment((prev) => ({ ...prev, [postId]: '' }));
+  } catch (err) {
+    console.error('Failed to post comment:', err.response?.data || err.message);
+  }
+};
+
 
   return (
     <div className="homepage">
@@ -107,31 +174,77 @@ const HomePage = () => {
                 <div className="post-actions">
                   <div className='left-icons'>
                     <FaHeart
-                      className={`like-icon ${likes[post.id] ? 'liked' : ''}`}
-                      onClick={() => toggleLike(post.id)}
-                    />
-                    <FaRegComment className="comment-icon" />
+  className={`like-icon ${post.is_liked ? 'liked' : ''}`}
+  onClick={() => handleToggleLike(post.id)}
+/>
+                    <FaRegComment
+                    className="comment-icon"
+                    onClick={() => {
+                      setSelectedPost(post);
+                      setShowModal(true);
+                      }}/>
                     <FiSend />
                   </div>
                   <div className='right-icon'><BsBookmark className="save-icon" /></div>
                 </div>
-
+                <div className="likes-count">
+  {post.likes_count} {post.likes_count === 1 ? "like" : "likes"}
+</div>
                 <p className="post-caption">
                   <strong>{post.user}</strong> {post.caption}
                 </p>
+
+                
+  {Array.isArray(post.comments) && post.comments.length > 0 && (
+  <p
+    className="comment-preview"
+    onClick={() => {
+      setSelectedPost({
+        ...post,
+        mediaType: post.video ? 'video' : 'image',
+        mediaUrl: post.video ? fullUrl(post.video) : fullUrl(post.image),
+      });
+      setShowModal(true);
+    }}
+  >
+    View all {post.comments.length}{" "}
+    {post.comments.length === 1 ? "comment" : "comments"}
+  </p>
+)}
+
+
                 <p className="timestamp">
                   Posted on {new Date(post.created_at).toLocaleString()}
                 </p>
 
-
                 <div className="comment-section">
-                  <input type="text" placeholder="Add a comment..." />
-                  <button>Post</button>
-                </div>
+  <input
+    type="text"
+    placeholder="Add a comment..."
+    value={newComment[post.id] || ''}
+    onChange={(e) =>
+      setNewComment({ ...newComment, [post.id]: e.target.value })
+    }
+  />
+  <button onClick={() => handleCommentSubmit(post.id)}>Post</button>
+</div>
+
               </div>
             );
           })}
         </div>
+        {showModal && selectedPost && (
+            <CommentModal
+             post={{
+            ...selectedPost,
+             mediaType: selectedPost.video ? 'video' : 'image',
+             mediaUrl: selectedPost.video
+             ? fullUrl(selectedPost.video)
+             : fullUrl(selectedPost.image),
+             }}
+             onClose={() => setShowModal(false)} />)}
+
+   
       </div>
 
       <div className="suggestions">
