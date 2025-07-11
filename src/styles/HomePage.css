@@ -149,8 +149,8 @@
   border: none;
   box-shadow: none;
   padding: 0;
-  margin-bottom: 40px; /* space between posts */
-  border-bottom: 1px solid #333; /* optional Instagram-style separator */
+  margin-bottom: 40px; 
+  border-bottom: 1px solid #333;
 }
 .timestamp {
   color: #888;

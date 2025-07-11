@@ -1,0 +1,138 @@
+:root {
+  --bg-dark: #000;
+  --text-light: #fff;
+  --text-muted: #aaa;
+  --border: #262626;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-wrapper {
+  padding: 2rem;
+  max-width: 935px;
+  margin: auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.top-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.top-row h2 {
+  font-size: 1.6rem;
+}
+
+.btn {
+  padding: 6px 12px;
+  background: #262626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn.secondary {
+  background-color: #333;
+}
+
+.icon-btn {
+  font-size: 1.2rem;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+}
+
+.bio {
+  font-size: 0.95rem;
+}
+
+.pronouns {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
+
+.username-badge {
+  display: inline-block;
+  background: #1a1a1a;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  margin: 0.3rem 0;
+}
+
+.bio a {
+  color: #0095f6;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.profile-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  border-top: 2px solid transparent;
+  cursor: pointer;
+}
+
+.tab.active {
+  border-top: 2px solid var(--text-light);
+  color: var(--text-light);
+}
+
+.tab .icon {
+  margin-right: 6px;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.post-grid-item {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  cursor: pointer;
+}

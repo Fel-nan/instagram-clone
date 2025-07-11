@@ -4,6 +4,7 @@ import HomePage from './pages/homePage';
 import LoginPage from './pages/loginPage';
 import SignupPage from './pages/signupPage';
 import CreatePost from './components/CreatePost';
+import ProfilePage from './pages/profilePage';
 import './App.css';
 
 
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/createpost' element={<CreatePost />} />
+        <Route path='/profile' element={<ProfilePage />} />
       </Routes>
     </Router>
   );
